@@ -5,11 +5,11 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true #开启自动路由，需配合注册中心实现
+          enabled: true # 是否与服务注册发现组件进行结合，通过 serviceId 转发到具体的服务实例,默认为 false，设为 true 便开启通过服务中心的自动根据 serviceId 创建路由的功能
           lower-case-service-id: true  #开启自动路由，需配合注册中心实现，将服务名称转小写
       routes:
 
-        - id: product-service                # 路由 ID，唯一
+        - id: product-service                # 自定义的路由 ID，保持唯一性
           uri: http://localhost:8888         # 目标 URI，路由到微服务的地址
           predicates:                        # 断言，判断条件
             - Path=/product/**               # 匹配对应 URL的请求，将匹配到的请求追加在目标URI之后
