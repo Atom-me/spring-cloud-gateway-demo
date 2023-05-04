@@ -5,19 +5,20 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true #gateway ?????????????????????????????????? router??? router ?????????????????????
-          lower-case-service-id: true  #????????????????
+          enabled: true #开启自动路由，需配合注册中心实现
+          lower-case-service-id: true  #开启自动路由，需配合注册中心实现，将服务名称转小写
       routes:
 
-        - id: product-service                # ??id???????????
-          uri: http://localhost:8888         # ???????
-          predicates:
-            - Path=/product/**               # ?????Path????????/product/???????
+        - id: product-service                # 路由 ID，唯一
+          uri: http://localhost:8888         # 目标 URI，路由到微服务的地址
+          predicates:                        # 断言，判断条件
+            - Path=/product/**               # 匹配对应 URL的请求，将匹配到的请求追加在目标URI之后
 
         - id: order-service
           uri: http://localhost:9999
           predicates:
             - Path=/order/**
           filters:
-            - PrefixPath=/hhhh              # ????, ??order-demo??????server.servlet.context-path=/hhhh
+            # 当访问 http://localhost:9999/order，加上前缀就变成 http://localhost:9999/hhhh/order
+            - PrefixPath=/hhhh              # PrefixPath Filter 的作用和 StripPrefix 正相反，是在 URL 路径前面添加一部分的前缀, 与微服务order-demo中配置的server.servlet.context-path=/hhhh对应
 
